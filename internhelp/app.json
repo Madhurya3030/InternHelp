@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "scheme": "internhelp",
+    "name": "internhelp",
+    "slug": "internhelp",
+    "version": "1.0.0",
+    "owner": "durgamadhurya",
+    "android": {
+      "package": "com.durgamadhurya.internhelp"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "425be105-3a86-4a5e-9a6c-5abdfda9e041"
+      }
+    }
+  }
+}
