@@ -25,7 +25,7 @@ const HomePage = () => {
         tabBarLabelStyle: { fontSize: 12, fontWeight: '600' },
       }}
     >
-      <Tab.Screen name="Feed" component={FeedScreen} />
+      <Tab.Screen name="Group" component={FeedScreen} />
       <Tab.Screen name="DMs" component={DMsStackScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>

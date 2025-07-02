@@ -30,30 +30,29 @@ const AuthScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
-console.log(AuthSession.makeRedirectUri({ useProxy: true }));
+  console.log('Redirect URI:', redirectUri);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
+    webClientId: '1063343671815-kndgshsgcabd9epjq9i1jo25h2a2nebt.apps.googleusercontent.com',
+    androidClientId: '1063343671815-fu772pbk3e1c5aa5ed9lqsek6kij79r7.apps.googleusercontent.com',
+    iosClientId: '1063343671815-kndgshsgcabd9epjq9i1jo25h2a2nebt.apps.googleusercontent.com',
     expoClientId: '1063343671815-kndgshsgcabd9epjq9i1jo25h2a2nebt.apps.googleusercontent.com',
-    androidClientId: '1063343671815-d2jdtgs4madb6fmg2lpkh9fuhanggskp.apps.googleusercontent.com',
-    redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
-
+    redirectUri: redirectUri,
   });
-  console.log(AuthSession.makeRedirectUri({ useProxy: true }));
-  console.log(AuthSession.makeRedirectUri({ useProxy: true }));
 
-
-useEffect(() => {
-  if (response?.type === 'success') {
-    const idToken = response.authentication?.idToken;
-    if (idToken) {
-      handleGoogleLogin(idToken);
-    } else {
-      Alert.alert('Error', 'Google authentication failed. No token found.');
+  useEffect(() => {
+    console.log('Google Auth Response:', response);
+    if (response?.type === 'success') {
+      const idToken = response.authentication?.idToken;
+      if (idToken) {
+        handleGoogleLogin(idToken);
+      } else {
+        Alert.alert('Error', 'Google authentication failed. No token found.');
+      }
+    } else if (response?.type === 'error') {
+      Alert.alert('Google Auth Error', response.error);
     }
-  } else if (response?.type === 'error') {
-    Alert.alert('Google Auth Error', response.error);
-  }
-}, [response]);
+  }, [response]);
 
 
 const handleGoogleLogin = async (idToken) => {
@@ -228,7 +227,11 @@ const clearFields = () => {
   onPress={async () => {
     try {
       console.log('Prompting Google login...');
-      await promptAsync();
+      const result = await promptAsync();
+      console.log('Google login prompt result:', result);
+      if (result.type !== 'success') {
+        Alert.alert('Login Cancelled', 'Google login was cancelled');
+      }
     } catch (err) {
       console.error('Google login error:', err);
       Alert.alert('Login Error', err.message || 'Something went wrong');
